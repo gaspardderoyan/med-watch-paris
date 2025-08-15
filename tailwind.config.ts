@@ -61,6 +61,19 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				medical: {
+					blue: 'hsl(var(--medical-blue))',
+					green: 'hsl(var(--medical-green))',
+					warning: 'hsl(var(--medical-warning))',
+					danger: 'hsl(var(--medical-danger))',
+					neutral: 'hsl(var(--medical-neutral))'
+				},
+				timer: {
+					safe: 'hsl(var(--timer-safe))',
+					warning: 'hsl(var(--timer-warning))',
+					'bg-safe': 'hsl(var(--timer-bg-safe))',
+					'bg-warning': 'hsl(var(--timer-bg-warning))'
 				}
 			},
 			borderRadius: {
