@@ -6,7 +6,9 @@ import { Slider } from "@/components/ui/slider-custom";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Pill, Shield, ShieldAlert } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useToast } from "@/hooks/use-toast";
+import { Clock, Pill, Shield, ShieldAlert, Settings, Download, Trash2 } from "lucide-react";
 
 type DoseEntry = { tsISO: string; amount: number };
 
@@ -81,6 +83,8 @@ const Index = () => {
   const [entries, setEntries] = useState<DoseEntry[]>(() => loadEntries());
   const [doseAmt, setDoseAmt] = useState<number>(1.0);
   const [tick, setTick] = useState<number>(0);
+  const [isAddingDose, setIsAddingDose] = useState<boolean>(false);
+  const { toast } = useToast();
 
   // Heartbeat for timer updates
   useEffect(() => {
@@ -112,19 +116,83 @@ const Index = () => {
     return elapsed.as("minutes") < RED_THRESHOLD_MIN;
   }, [elapsed]);
 
-  function addDose() {
-    const tsISO = toISOParis(nowParis());
-    const newEntry: DoseEntry = { tsISO, amount: Number(doseAmt.toFixed(1)) };
-    const next = [newEntry, ...entries];
-    setEntries(next);
-    saveEntries(next);
+  // Haptic feedback function
+  function triggerHaptic(type: 'light' | 'medium' | 'heavy' = 'light') {
+    if (navigator.vibrate) {
+      const patterns = {
+        light: [10],
+        medium: [20],
+        heavy: [50]
+      };
+      navigator.vibrate(patterns[type]);
+    }
+  }
+
+  async function addDose() {
+    if (isAddingDose) return; // Prevent double clicks
+    
+    setIsAddingDose(true);
+    triggerHaptic('medium');
+    
+    try {
+      const tsISO = toISOParis(nowParis());
+      const newEntry: DoseEntry = { tsISO, amount: Number(doseAmt.toFixed(1)) };
+      const next = [newEntry, ...entries];
+      setEntries(next);
+      saveEntries(next);
+      
+      toast({
+        title: "Dose added",
+        description: `${doseAmt.toFixed(1)} dose recorded at ${DateTime.now().setZone(PARIS).toFormat('HH:mm')}`
+      });
+    } finally {
+      // Add delay to prevent rapid clicks
+      setTimeout(() => setIsAddingDose(false), 1000);
+    }
+  }
+
+  function deleteAllDoses() {
+    setEntries([]);
+    localStorage.removeItem(CSV_KEY);
+    triggerHaptic('heavy');
+    toast({
+      title: "All doses deleted",
+      description: "Your dose history has been cleared"
+    });
+  }
+
+  function exportToCSV() {
+    if (entries.length === 0) {
+      toast({
+        title: "No data to export",
+        description: "Add some doses first"
+      });
+      return;
+    }
+
+    const csv = entriesToCSV(entries);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `dose-tracker-${DateTime.now().toFormat('yyyy-MM-dd')}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    triggerHaptic('light');
+    toast({
+      title: "CSV exported",
+      description: "Your dose data has been downloaded"
+    });
   }
 
   function intervalSincePrev(i: number): string {
     if (i === entries.length - 1) return "—";
     const curr = DateTime.fromISO(entries[i].tsISO);
     const prev = DateTime.fromISO(entries[i + 1].tsISO);
-    const d = curr.diff(prev, ["hours", "minutes"]).negate();
+    const d = curr.diff(prev, ["hours", "minutes"]); // Remove .negate() - curr is newer than prev
     const h = Math.floor(d.as("hours"));
     const m = Math.floor(d.minus({ hours: h }).as("minutes"));
     return `${h}h ${m}m`;
@@ -132,13 +200,49 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background p-4 max-w-2xl mx-auto">
-      {/* Header */}
-      <div className="text-center mb-8 pt-4">
+      {/* Header with Settings */}
+      <div className="relative text-center mb-8 pt-4">
         <div className="flex items-center justify-center gap-2 mb-2">
           <Pill className="h-8 w-8 text-medical-blue" />
           <h1 className="text-3xl font-bold text-foreground">Dose Tracker</h1>
         </div>
         <p className="text-muted-foreground">Precise medication timing & safety monitoring</p>
+        
+        {/* Settings Button */}
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className="absolute top-0 right-0"
+              onClick={() => triggerHaptic('light')}
+            >
+              <Settings className="h-4 w-4" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-48" align="end">
+            <div className="space-y-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full justify-start"
+                onClick={exportToCSV}
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Export CSV
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                className="w-full justify-start"
+                onClick={deleteAllDoses}
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete All
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
 
       {/* Big Timer Display */}
@@ -197,12 +301,19 @@ const Index = () => {
               max={2}
               step={0.1}
               value={[doseAmt]}
-              onValueChange={(value) => setDoseAmt(value[0])}
+              onValueChange={(value) => {
+                setDoseAmt(value[0]);
+                triggerHaptic('light');
+              }}
               className="mb-4"
             />
           </div>
-          <Button onClick={addDose} className="w-full h-12 text-lg font-semibold">
-            Add Dose
+          <Button 
+            onClick={addDose} 
+            disabled={isAddingDose}
+            className="w-full h-12 text-lg font-semibold transition-all duration-200"
+          >
+            {isAddingDose ? "Adding..." : "Add Dose"}
           </Button>
           <p className="text-xs text-muted-foreground text-center">
             Data saved locally in your browser
