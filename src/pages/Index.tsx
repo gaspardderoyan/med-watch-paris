@@ -246,14 +246,14 @@ const Index = () => {
       </div>
 
       {/* Big Timer Display */}
-      <Card className="mb-6">
+      <Card className="mb-6 grainy glass border-border/50">
         <CardContent className="pt-6">
           <div className="text-center">
             <div
-              className={`inline-flex items-center gap-3 px-6 py-4 rounded-2xl transition-all duration-300 ${
+              className={`inline-flex items-center gap-3 px-8 py-6 rounded-3xl transition-all duration-500 grainy relative overflow-hidden ${
                 isWarning
-                  ? "bg-timer-bg-warning text-timer-warning"
-                  : "bg-timer-bg-safe text-timer-safe"
+                  ? "bg-timer-bg-warning text-timer-warning shadow-xl shadow-timer-warning/30"
+                  : "bg-timer-bg-safe text-timer-safe shadow-xl shadow-timer-safe/30"
               }`}
             >
               {isWarning ? (
@@ -275,7 +275,7 @@ const Index = () => {
       </Card>
 
       {/* Dose Input */}
-      <Card className="mb-6">
+      <Card className="mb-6 grainy glass border-border/50">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Pill className="h-5 w-5" />
@@ -322,7 +322,7 @@ const Index = () => {
       </Card>
 
       {/* History */}
-      <Card>
+      <Card className="grainy glass border-border/50">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Clock className="h-5 w-5" />
@@ -346,7 +346,7 @@ const Index = () => {
                   
                   return (
                     <div key={entry.tsISO + i}>
-                      <div className="flex justify-between items-center py-3 px-2 rounded-lg hover:bg-muted/50 transition-colors">
+                      <div className="flex justify-between items-center py-3 px-3 rounded-lg hover:bg-muted/30 transition-all duration-300 grainy border border-transparent hover:border-border/30">
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
                             <span className="text-xl font-bold text-medical-blue">

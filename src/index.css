@@ -8,46 +8,46 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 248 251 255;
-    --foreground: 210 24% 16%;
+    --background: 16 11% 8%;
+    --foreground: 320 20% 88%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 210 24% 16%;
+    --card: 320 15% 12%;
+    --card-foreground: 320 20% 88%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 24% 16%;
+    --popover: 320 15% 12%;
+    --popover-foreground: 320 20% 88%;
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 310 45% 60%;
+    --primary-foreground: 320 20% 95%;
 
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 210 24% 16%;
+    --secondary: 320 15% 18%;
+    --secondary-foreground: 320 20% 88%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 320 15% 18%;
+    --muted-foreground: 320 12% 55%;
 
-    --accent: 142 76% 36%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 280 50% 65%;
+    --accent-foreground: 320 20% 95%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 60% 55%;
+    --destructive-foreground: 320 20% 95%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 217 91% 60%;
+    --border: 320 15% 22%;
+    --input: 320 15% 22%;
+    --ring: 310 45% 60%;
 
-    /* Medical app specific colors */
-    --medical-blue: 217 91% 60%;
-    --medical-green: 142 76% 36%;
-    --medical-warning: 38 92% 50%;
-    --medical-danger: 0 84% 60%;
-    --medical-neutral: 220 13% 91%;
+    /* Medical app specific colors - dark pastel theme */
+    --medical-blue: 250 40% 60%;
+    --medical-green: 150 35% 55%;
+    --medical-warning: 35 60% 60%;
+    --medical-danger: 0 60% 55%;
+    --medical-neutral: 320 15% 22%;
     
-    /* Timer states */
-    --timer-safe: 142 76% 36%;
-    --timer-warning: 0 84% 60%;
-    --timer-bg-safe: 142 76% 95%;
-    --timer-bg-warning: 0 84% 95%;
+    /* Timer states - dark pastel */
+    --timer-safe: 150 35% 55%;
+    --timer-warning: 0 60% 55%;
+    --timer-bg-safe: 150 35% 15%;
+    --timer-bg-warning: 0 60% 15%;
 
     --radius: 0.5rem;
 
@@ -69,46 +69,46 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222 84% 5%;
-    --foreground: 210 40% 98%;
+    --background: 16 11% 8%;
+    --foreground: 320 20% 88%;
 
-    --card: 222 84% 5%;
-    --card-foreground: 210 40% 98%;
+    --card: 320 15% 12%;
+    --card-foreground: 320 20% 88%;
 
-    --popover: 222 84% 5%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 320 15% 12%;
+    --popover-foreground: 320 20% 88%;
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 310 45% 60%;
+    --primary-foreground: 320 20% 95%;
 
-    --secondary: 217 33% 18%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 320 15% 18%;
+    --secondary-foreground: 320 20% 88%;
 
-    --muted: 217 33% 18%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 320 15% 18%;
+    --muted-foreground: 320 12% 55%;
 
-    --accent: 142 76% 36%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 280 50% 65%;
+    --accent-foreground: 320 20% 95%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 60% 55%;
+    --destructive-foreground: 320 20% 95%;
 
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 217 91% 60%;
+    --border: 320 15% 22%;
+    --input: 320 15% 22%;
+    --ring: 310 45% 60%;
 
-    /* Medical app specific colors - dark mode */
-    --medical-blue: 217 91% 60%;
-    --medical-green: 142 76% 36%;
-    --medical-warning: 38 92% 50%;
-    --medical-danger: 0 84% 60%;
-    --medical-neutral: 217 33% 18%;
+    /* Medical app specific colors - dark pastel theme */
+    --medical-blue: 250 40% 60%;
+    --medical-green: 150 35% 55%;
+    --medical-warning: 35 60% 60%;
+    --medical-danger: 0 60% 55%;
+    --medical-neutral: 320 15% 22%;
     
-    /* Timer states - dark mode */
-    --timer-safe: 142 76% 36%;
-    --timer-warning: 0 84% 60%;
-    --timer-bg-safe: 142 76% 15%;
-    --timer-bg-warning: 0 84% 15%;
+    /* Timer states - dark pastel */
+    --timer-safe: 150 35% 55%;
+    --timer-warning: 0 60% 55%;
+    --timer-bg-safe: 150 35% 15%;
+    --timer-bg-warning: 0 60% 15%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -129,6 +129,25 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     padding-bottom: env(safe-area-inset-bottom);
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+    background-size: 20px 20px;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 50%, hsla(310, 45%, 30%, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsla(280, 50%, 35%, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, hsla(250, 40%, 30%, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
   }
 
   /* Touch-friendly enhancements */
@@ -144,5 +163,31 @@ All colors MUST be HSL.
   .timer-display {
     font-feature-settings: "tnum" 1;
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Grainy texture for modern look */
+  .grainy {
+    position: relative;
+  }
+
+  .grainy::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0);
+    background-size: 16px 16px;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
