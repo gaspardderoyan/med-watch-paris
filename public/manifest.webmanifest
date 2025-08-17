@@ -4,8 +4,8 @@
   "description": "Smart medication dose tracker with precise timing and safe interval monitoring",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f8fbff",
-  "theme_color": "#3b82f6",
+  "background_color": "#0f0f0f",
+  "theme_color": "#0f0f0f",
   "orientation": "portrait-primary",
   "icons": [
     {

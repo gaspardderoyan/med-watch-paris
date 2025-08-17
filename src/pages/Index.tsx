@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Clock, Pill, Shield, ShieldAlert, Settings, Download, Trash2 } from "lucide-react";
 
@@ -84,6 +85,8 @@ const Index = () => {
   const [doseAmt, setDoseAmt] = useState<number>(1.0);
   const [tick, setTick] = useState<number>(0);
   const [isAddingDose, setIsAddingDose] = useState<boolean>(false);
+  const [deleteEntry, setDeleteEntry] = useState<DoseEntry | null>(null);
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
 
   // Heartbeat for timer updates
@@ -186,6 +189,33 @@ const Index = () => {
       title: "CSV exported",
       description: "Your dose data has been downloaded"
     });
+  }
+
+  function deleteSingleDose(entryToDelete: DoseEntry) {
+    const updated = entries.filter(e => e.tsISO !== entryToDelete.tsISO);
+    setEntries(updated);
+    saveEntries(updated);
+    setDeleteEntry(null);
+    triggerHaptic('medium');
+    toast({
+      title: "Dose deleted",
+      description: `Dose from ${DateTime.fromISO(entryToDelete.tsISO).setZone(PARIS).toFormat('HH:mm')} removed`
+    });
+  }
+
+  function handleLongPressStart(entry: DoseEntry) {
+    const timer = setTimeout(() => {
+      setDeleteEntry(entry);
+      triggerHaptic('heavy');
+    }, 500);
+    setLongPressTimer(timer);
+  }
+
+  function handleLongPressEnd() {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      setLongPressTimer(null);
+    }
   }
 
   function intervalSincePrev(i: number): string {
@@ -305,6 +335,7 @@ const Index = () => {
                 setDoseAmt(value[0]);
                 triggerHaptic('light');
               }}
+              onPointerMove={() => triggerHaptic('light')}
               className="mb-4"
             />
           </div>
@@ -330,7 +361,7 @@ const Index = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ScrollArea className="h-[50vh]">
+          <div className="max-h-[50vh] overflow-y-auto">
             {entries.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
                 <Pill className="h-12 w-12 mx-auto mb-3 opacity-50" />
@@ -346,7 +377,15 @@ const Index = () => {
                   
                   return (
                     <div key={entry.tsISO + i}>
-                      <div className="flex justify-between items-center py-3 px-3 rounded-lg hover:bg-muted/30 transition-all duration-300 grainy border border-transparent hover:border-border/30">
+                      <div 
+                        className="flex justify-between items-center py-3 px-3 rounded-lg hover:bg-muted/30 transition-all duration-300 grainy border border-transparent hover:border-border/30 cursor-pointer select-none"
+                        onMouseDown={() => handleLongPressStart(entry)}
+                        onMouseUp={handleLongPressEnd}
+                        onMouseLeave={handleLongPressEnd}
+                        onTouchStart={() => handleLongPressStart(entry)}
+                        onTouchEnd={handleLongPressEnd}
+                        onTouchCancel={handleLongPressEnd}
+                      >
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
                             <span className="text-xl font-bold text-medical-blue">
@@ -377,9 +416,32 @@ const Index = () => {
                 })}
               </div>
             )}
-          </ScrollArea>
+          </div>
         </CardContent>
       </Card>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!deleteEntry} onOpenChange={() => setDeleteEntry(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Dose</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete the dose of {deleteEntry?.amount.toFixed(1)} from{' '}
+              {deleteEntry && DateTime.fromISO(deleteEntry.tsISO).setZone(PARIS).toFormat('ccc dd LLL HH:mm')}?
+              This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={() => deleteEntry && deleteSingleDose(deleteEntry)}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Footer */}
       <div className="text-center mt-6 pt-4 border-t">
