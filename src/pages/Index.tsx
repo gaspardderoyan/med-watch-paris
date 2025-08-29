@@ -203,7 +203,12 @@ const Index = () => {
     });
   }
 
-  function handleLongPressStart(entry: DoseEntry) {
+  function handleLongPressStart(entry: DoseEntry, event: React.TouchEvent | React.MouseEvent) {
+    // Prevent default touch behavior to avoid conflicts
+    if ('touches' in event) {
+      event.preventDefault();
+    }
+    
     const timer = setTimeout(() => {
       setDeleteEntry(entry);
       triggerHaptic('heavy');
@@ -211,7 +216,7 @@ const Index = () => {
     setLongPressTimer(timer);
   }
 
-  function handleLongPressEnd() {
+  function handleLongPressEnd(event?: React.TouchEvent | React.MouseEvent) {
     if (longPressTimer) {
       clearTimeout(longPressTimer);
       setLongPressTimer(null);
@@ -379,12 +384,13 @@ const Index = () => {
                     <div key={entry.tsISO + i}>
                       <div 
                         className="flex justify-between items-center py-3 px-3 rounded-lg hover:bg-muted/30 transition-all duration-300 grainy border border-transparent hover:border-border/30 cursor-pointer select-none"
-                        onMouseDown={() => handleLongPressStart(entry)}
+                        onMouseDown={(e) => handleLongPressStart(entry, e)}
                         onMouseUp={handleLongPressEnd}
                         onMouseLeave={handleLongPressEnd}
-                        onTouchStart={() => handleLongPressStart(entry)}
+                        onTouchStart={(e) => handleLongPressStart(entry, e)}
                         onTouchEnd={handleLongPressEnd}
                         onTouchCancel={handleLongPressEnd}
+                        style={{ touchAction: 'manipulation' }}
                       >
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
