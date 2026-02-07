@@ -234,14 +234,14 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background p-4 max-w-2xl mx-auto">
+    <div className="min-h-screen bg-background px-3 py-3 sm:p-4 max-w-2xl mx-auto">
       {/* Header with Settings */}
-      <div className="relative text-center mb-8 pt-4">
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <Pill className="h-8 w-8 text-medical-blue" />
-          <h1 className="text-3xl font-bold text-foreground">Dose Tracker</h1>
+      <div className="relative text-center mb-4 sm:mb-8 pt-2 sm:pt-4">
+        <div className="flex items-center justify-center gap-2 mb-1 sm:mb-2">
+          <Pill className="h-6 w-6 sm:h-8 sm:w-8 text-medical-blue" />
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Dose Tracker</h1>
         </div>
-        <p className="text-muted-foreground">Precise medication timing & safety monitoring</p>
+        <p className="text-sm sm:text-base text-muted-foreground">Precise medication timing & safety monitoring</p>
         
         {/* Settings Button */}
         <Popover>
@@ -281,27 +281,27 @@ const Index = () => {
       </div>
 
       {/* Big Timer Display */}
-      <Card className="mb-6 grainy glass border-border/50">
-        <CardContent className="pt-6">
+      <Card className="mb-4 sm:mb-6 grainy glass border-border/50">
+        <CardContent className="pt-4 sm:pt-6">
           <div className="text-center">
             <div
-              className={`inline-flex items-center gap-3 px-8 py-6 rounded-3xl transition-all duration-500 grainy relative overflow-hidden ${
+              className={`inline-flex items-center gap-2 sm:gap-3 px-4 py-3 sm:px-8 sm:py-6 rounded-2xl sm:rounded-3xl transition-all duration-500 grainy relative overflow-hidden ${
                 isWarning
                   ? "bg-timer-bg-warning text-timer-warning shadow-xl shadow-timer-warning/30"
                   : "bg-timer-bg-safe text-timer-safe shadow-xl shadow-timer-safe/30"
               }`}
             >
               {isWarning ? (
-                <ShieldAlert className="h-8 w-8" />
+                <ShieldAlert className="h-5 w-5 sm:h-8 sm:w-8" />
               ) : (
-                <Shield className="h-8 w-8" />
+                <Shield className="h-5 w-5 sm:h-8 sm:w-8" />
               )}
-              <span className="text-5xl font-mono font-bold timer-display">
+              <span className="text-3xl sm:text-5xl font-mono font-bold timer-display">
                 {elapsed ? formatElapsed(elapsed) : "— — : — — : — —"}
               </span>
             </div>
-            <div className="mt-3">
-              <Badge variant={isWarning ? "destructive" : "default"} className="text-sm">
+            <div className="mt-2 sm:mt-3">
+              <Badge variant={isWarning ? "destructive" : "default"} className="text-xs sm:text-sm">
                 {isWarning ? "Wait until 1h30 has passed" : "Safe interval reached"}
               </Badge>
             </div>
@@ -310,23 +310,23 @@ const Index = () => {
       </Card>
 
       {/* Dose Input */}
-      <Card className="mb-6 grainy glass border-border/50">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Pill className="h-5 w-5" />
+      <Card className="mb-4 sm:mb-6 grainy glass border-border/50">
+        <CardHeader className="px-4 py-3 sm:px-6 sm:py-4">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Pill className="h-4 w-4 sm:h-5 sm:w-5" />
             Add New Dose
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-xs sm:text-sm">
             Adjust dose amount and add to your medication log
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6">
           <div>
-            <div className="flex justify-between items-center mb-3">
+            <div className="flex justify-between items-center mb-2 sm:mb-3">
               <label htmlFor="dose" className="text-sm font-medium">
                 Dose Amount
               </label>
-              <span className="text-2xl font-bold text-medical-blue">
+              <span className="text-xl sm:text-2xl font-bold text-medical-blue">
                 {doseAmt.toFixed(1)}
               </span>
             </div>
@@ -344,10 +344,10 @@ const Index = () => {
               className="mb-4"
             />
           </div>
-          <Button 
-            onClick={addDose} 
+          <Button
+            onClick={addDose}
             disabled={isAddingDose}
-            className="w-full h-12 text-lg font-semibold transition-all duration-200"
+            className="w-full h-10 sm:h-12 text-base sm:text-lg font-semibold transition-all duration-200"
           >
             {isAddingDose ? "Adding..." : "Add Dose"}
           </Button>
@@ -359,17 +359,17 @@ const Index = () => {
 
       {/* History */}
       <Card className="grainy glass border-border/50">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
+        <CardHeader className="px-4 py-3 sm:px-6 sm:py-4">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
             Recent Doses
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           <div className="max-h-[50vh] overflow-y-auto">
             {entries.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
-                <Pill className="h-12 w-12 mx-auto mb-3 opacity-50" />
+              <div className="text-center py-6 sm:py-8 text-muted-foreground">
+                <Pill className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 opacity-50" />
                 <p>No doses recorded yet</p>
                 <p className="text-sm">Add your first dose above</p>
               </div>
@@ -383,7 +383,7 @@ const Index = () => {
                   return (
                     <div key={entry.tsISO + i}>
                       <div 
-                        className="flex justify-between items-center py-3 px-3 rounded-lg hover:bg-muted/30 transition-all duration-300 grainy border border-transparent hover:border-border/30 cursor-pointer select-none"
+                        className="flex justify-between items-center py-2 px-2 sm:py-3 sm:px-3 rounded-lg hover:bg-muted/30 transition-all duration-300 grainy border border-transparent hover:border-border/30 cursor-pointer select-none"
                         onMouseDown={(e) => handleLongPressStart(entry, e)}
                         onMouseUp={handleLongPressEnd}
                         onMouseLeave={handleLongPressEnd}
@@ -394,7 +394,7 @@ const Index = () => {
                       >
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-xl font-bold text-medical-blue">
+                            <span className="text-lg sm:text-xl font-bold text-medical-blue">
                               {entry.amount.toFixed(1)}
                             </span>
                             {dayLabel && (
